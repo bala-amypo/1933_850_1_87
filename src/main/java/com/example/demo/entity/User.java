@@ -21,32 +21,49 @@ public class User {
     private String firstName;
     private String lastName;
 
+    // 0‑arg constructor
     public User() {
     }
 
-    // Constructor used in some tests with id + username
-    public User(String id, String username) {
-        try {
-            this.id = Long.parseLong(id);
-        } catch (NumberFormatException e) {
-            this.id = null;
-        }
+    // 2‑arg: id, username
+    public User(Long id, String username) {
+        this.id = id;
         this.username = username;
     }
 
-    // Full constructor with 7 String arguments
-    public User(String id,
+    // 3‑arg: id, username, email
+    public User(Long id, String username, String email) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+    }
+
+    // 4‑arg: id, username, email, role
+    public User(Long id, String username, String email, String role) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.role = role;
+    }
+
+    // 5‑arg: id, username, email, password, role
+    public User(Long id, String username, String email, String password, String role) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+    // 7‑arg: id, username, email, password, role, firstName, lastName
+    public User(Long id,
                 String username,
                 String email,
                 String password,
                 String role,
                 String firstName,
                 String lastName) {
-        try {
-            this.id = Long.parseLong(id);
-        } catch (NumberFormatException e) {
-            this.id = null;
-        }
+        this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
@@ -56,6 +73,7 @@ public class User {
     }
 
     // Getters and setters
+
     public Long getId() {
         return id;
     }
