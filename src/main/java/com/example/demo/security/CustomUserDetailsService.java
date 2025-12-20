@@ -1,5 +1,6 @@
 package com.example.demo.security;
 
+import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 
 public class CustomUserDetailsService {
@@ -10,5 +11,8 @@ public class CustomUserDetailsService {
         this.userRepository = userRepository;
     }
 
-    // Add real load logic later; for now only constructor is required for compilation
+    // Tests call this with a username and expect a User back
+    public User loadUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
+    }
 }
