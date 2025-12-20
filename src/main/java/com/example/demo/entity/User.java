@@ -1,6 +1,8 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -9,40 +11,29 @@ import jakarta.persistence.Table;
 public class User {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String username;
     private String email;
     private String password;
     private String role;
-    private String firstName;
-    private String lastName;
 
     public User() {
     }
 
-    // Constructor used in tests: 7 String arguments
-    public User(String id,
-                String username,
-                String email,
-                String password,
-                String role,
-                String firstName,
-                String lastName) {
-        this.id = id;
+    public User(String username, String email, String password, String role) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
-        this.firstName = firstName;
-        this.lastName = lastName;
     }
 
-    // Getters and setters
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -76,21 +67,5 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 }

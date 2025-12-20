@@ -1,48 +1,65 @@
 package com.example.demo.security;
 
-import com.example.demo.entity.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 @Component
 public class JwtUtil {
 
-    // Generate token for a User (signature used in tests)
-    public String generateTokenForUser(User user) {
-        // Simple dummy token; tests mostly care about method existing
-        return "token-" + user.getId() + "-" + user.getUsername() + "-" + user.getRole();
-    }
+    private final String SECRET_KEY = "secret-key-change-me";
+    private final long EXPIRATION_MS = 24 * 60 * 60 * 1000; // 1 day
 
-    // Validate token for a given username (signature used in tests)
-    public boolean isTokenValid(String token, String username) {
-        // Very naive check just so tests can run logic
-        return token != null && username != null && token.contains(username);
-    }
-
-    // Extract username from token
     public String extractUsername(String token) {
-        // Dummy extraction: assumes token-<id>-<username>-<role>
-        if (token == null) {
-            return null;
-        }
-        String[] parts = token.split("-");
-        return parts.length >= 3 ? parts[2] : null;
+        return extractClaim(token, Claims::getSubject);
     }
 
-    // Extract role from token
-    public String extractRole(String token) {
-        if (token == null) {
-            return null;
-        }
-        String[] parts = token.split("-");
-        return parts.length >= 4 ? parts[3] : null;
+    public Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
     }
 
-    // Extract user id from token
-    public String extractUserId(String token) {
-        if (token == null) {
-            return null;
-        }
-        String[] parts = token.split("-");
-        return parts.length >= 2 ? parts[1] : null;
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", userDetails.getAuthorities());
+        return createToken(claims, userDetails.getUsername());
+    }
+
+    private String createToken(Map<String, Object> claims, String subject) {
+        Date now = new Date();
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + EXPIRATION_MS))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
+    }
+
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
+        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 }
