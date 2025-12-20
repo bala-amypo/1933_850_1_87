@@ -41,7 +41,7 @@ public class ActivityType {
     }
 
     @PrePersist
-    public void onCreate() {
+    public void prePersist() {
         if (createdAt == null) {
             createdAt = LocalDateTime.now();
         }

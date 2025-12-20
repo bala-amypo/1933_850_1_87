@@ -33,8 +33,9 @@ public class ActivityCategory {
         this.createdAt = createdAt;
     }
 
+    // JPA lifecycle – tests expect prePersist()
     @PrePersist
-    public void onCreate() {
+    public void prePersist() {
         if (createdAt == null) {
             createdAt = LocalDateTime.now();
         }

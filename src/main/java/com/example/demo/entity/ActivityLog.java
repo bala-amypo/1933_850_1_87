@@ -43,7 +43,7 @@ public class ActivityLog {
     }
 
     @PrePersist
-    public void onCreate() {
+    public void prePersist() {
         if (loggedAt == null) {
             loggedAt = LocalDateTime.now();
         }
