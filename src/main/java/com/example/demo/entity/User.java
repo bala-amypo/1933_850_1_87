@@ -14,21 +14,27 @@ public class User {
     private String email;
     private String password;
     private String role;
+    private String firstName;
+    private String lastName;
 
     public User() {
     }
 
-    // Constructor used in tests: many String args
+    // Constructor used in tests: 7 String arguments
     public User(String id,
                 String username,
                 String email,
                 String password,
-                String role) {
+                String role,
+                String firstName,
+                String lastName) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     // Getters and setters
@@ -70,5 +76,21 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }
