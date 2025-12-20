@@ -1,6 +1,11 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -44,26 +49,5 @@ public class ActivityLog {
         }
     }
 
-    // getters and setters
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public ActivityType getActivityType() { return activityType; }
-    public void setActivityType(ActivityType activityType) { this.activityType = activityType; }
-
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
-
-    public Double getQuantity() { return quantity; }
-    public void setQuantity(Double quantity) { this.quantity = quantity; }
-
-    public LocalDate getActivityDate() { return activityDate; }
-    public void setActivityDate(LocalDate activityDate) { this.activityDate = activityDate; }
-
-    public LocalDateTime getLoggedAt() { return loggedAt; }
-    public void setLoggedAt(LocalDateTime loggedAt) { this.loggedAt = loggedAt; }
-
-    public Double getEstimatedEmission() { return estimatedEmission; }
-    public void setEstimatedEmission(Double estimatedEmission) { this.estimatedEmission = estimatedEmission; }
+    // getters and setters ...
 }

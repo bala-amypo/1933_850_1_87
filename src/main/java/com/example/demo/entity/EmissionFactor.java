@@ -1,6 +1,11 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import java.time.LocalDateTime;
 
 @Entity
@@ -39,20 +44,5 @@ public class EmissionFactor {
         }
     }
 
-    // getters and setters
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public ActivityType getActivityType() { return activityType; }
-    public void setActivityType(ActivityType activityType) { this.activityType = activityType; }
-
-    public Double getFactorValue() { return factorValue; }
-    public void setFactorValue(Double factorValue) { this.factorValue = factorValue; }
-
-    public String getUnit() { return unit; }
-    public void setUnit(String unit) { this.unit = unit; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    // getters and setters ...
 }
