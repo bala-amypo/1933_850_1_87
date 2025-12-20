@@ -1,36 +1,35 @@
-// User.java
+// ActivityType.java
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
-public class User {
+public class ActivityType {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String fullName;
-
     @Column(unique = true, nullable = false)
-    private String email;
+    private String typeName;
 
-    private String password;
+    @ManyToOne(optional = false)
+    private ActivityCategory category;
 
-    private String role;
+    @Column(nullable = false)
+    private String unit;
 
     private LocalDateTime createdAt;
 
-    public User() {}
+    public ActivityType() {}
 
-    public User(Long id, String fullName, String email, String password, String role,
-                LocalDateTime createdAt) {
+    public ActivityType(Long id, String typeName,
+                        ActivityCategory category, String unit,
+                        LocalDateTime createdAt) {
         this.id = id;
-        this.fullName = fullName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
+        this.typeName = typeName;
+        this.category = category;
+        this.unit = unit;
         this.createdAt = createdAt;
     }
 
@@ -38,9 +37,6 @@ public class User {
     public void onCreate() {
         if (createdAt == null) {
             createdAt = LocalDateTime.now();
-        }
-        if (role == null) {
-            role = "USER";
         }
     }
 
