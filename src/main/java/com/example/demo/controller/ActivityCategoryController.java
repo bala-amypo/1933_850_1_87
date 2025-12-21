@@ -21,7 +21,7 @@ public class ActivityCategoryController {
 
     @PostMapping
     public ResponseEntity<ActivityCategory> create(
-            @RequestBody ActivityCategoryRequest request) {
+            @RequestBody request) {
         return ResponseEntity.ok(categoryService.createCategory(request));
     }
 
@@ -31,7 +31,7 @@ public class ActivityCategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ActivityCategoryResponse> getById(@PathVariable Long id) {
+    public ResponseEntity<ActivityCategory> getById(@PathVariable Long id) {
         return ResponseEntity.ok(categoryService.getCategoryById(id));
     }
 }
