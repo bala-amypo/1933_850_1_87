@@ -1,10 +1,7 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
@@ -14,84 +11,54 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // fields that UserServiceImpl and tests use
+    private String fullName;
+    @Column(unique = true, nullable = false)
     private String email;
     private String password;
-    private String role;
-
-    // generic extra fields so multiple test constructors can compile
-    private String field1;
-    private String field2;
+    private String role;           // "USER" or "ADMIN"
+    private LocalDateTime createdAt;
 
     public User() {
     }
 
-    // basic constructor used by service/tests
-    public User(Long id, String email, String password, String role) {
+    // constructor used in tests:
+    // User(Long id, String fullName, String email, String password, String role, LocalDateTime createdAt)
+    public User(Long id,
+                String fullName,
+                String email,
+                String password,
+                String role,
+                LocalDateTime createdAt) {
         this.id = id;
+        this.fullName = fullName;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.createdAt = createdAt;
     }
 
-    // additional overloads to satisfy various User(...)
-    public User(Long id, String email, String password, String role, String field1) {
-        this(id, email, password, role);
-        this.field1 = field1;
+    @PrePersist
+    public void prePersist() {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
     }
 
-    public User(Long id, String email, String password, String role, String field1, String field2) {
-        this(id, email, password, role, field1);
-        this.field2 = field2;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    // getters and setters
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
 
-    public Long getId() {
-        return id;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getField1() {
-        return field1;
-    }
-
-    public void setField1(String field1) {
-        this.field1 = field1;
-    }
-
-    public String getField2() {
-        return field2;
-    }
-
-    public void setField2(String field2) {
-        this.field2 = field2;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }
