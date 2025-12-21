@@ -12,17 +12,20 @@ public class User {
     private Long id;
 
     private String fullName;
+
     @Column(unique = true, nullable = false)
     private String email;
+
     private String password;
-    private String role;           // "USER" or "ADMIN"
+
+    private String role; // "USER" or "ADMIN"
+
     private LocalDateTime createdAt;
 
     public User() {
     }
 
-    // constructor used in tests:
-    // User(Long id, String fullName, String email, String password, String role, LocalDateTime createdAt)
+    // Constructor with all fields
     public User(Long id,
                 String fullName,
                 String email,
@@ -37,6 +40,7 @@ public class User {
         this.createdAt = createdAt;
     }
 
+    // Automatically set createdAt before persisting
     @PrePersist
     public void prePersist() {
         if (createdAt == null) {
@@ -44,6 +48,7 @@ public class User {
         }
     }
 
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
