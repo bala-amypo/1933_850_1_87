@@ -14,55 +14,38 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // up to 5 string fields to match many constructor calls
+    // fields that UserServiceImpl and tests use
+    private String email;
+    private String password;
+    private String role;
+
+    // generic extra fields so multiple test constructors can compile
     private String field1;
     private String field2;
-    private String field3;
-    private String field4;
-    private String field5;
 
     public User() {
     }
 
-    // 2 args
-    public User(Long id, String f1) {
+    // basic constructor used by service/tests
+    public User(Long id, String email, String password, String role) {
         this.id = id;
-        this.field1 = f1;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 
-    // 3 args
-    public User(Long id, String f1, String f2) {
-        this.id = id;
-        this.field1 = f1;
-        this.field2 = f2;
+    // additional overloads to satisfy various User(...)
+    public User(Long id, String email, String password, String role, String field1) {
+        this(id, email, password, role);
+        this.field1 = field1;
     }
 
-    // 4 args
-    public User(Long id, String f1, String f2, String f3) {
-        this.id = id;
-        this.field1 = f1;
-        this.field2 = f2;
-        this.field3 = f3;
+    public User(Long id, String email, String password, String role, String field1, String field2) {
+        this(id, email, password, role, field1);
+        this.field2 = field2;
     }
 
-    // 5 args
-    public User(Long id, String f1, String f2, String f3, String f4) {
-        this.id = id;
-        this.field1 = f1;
-        this.field2 = f2;
-        this.field3 = f3;
-        this.field4 = f4;
-    }
-
-    // 6 args
-    public User(Long id, String f1, String f2, String f3, String f4, String f5) {
-        this.id = id;
-        this.field1 = f1;
-        this.field2 = f2;
-        this.field3 = f3;
-        this.field4 = f4;
-        this.field5 = f5;
-    }
+    // getters and setters
 
     public Long getId() {
         return id;
@@ -70,6 +53,30 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getField1() {
@@ -86,29 +93,5 @@ public class User {
 
     public void setField2(String field2) {
         this.field2 = field2;
-    }
-
-    public String getField3() {
-        return field3;
-    }
-
-    public void setField3(String field3) {
-        this.field3 = field3;
-    }
-
-    public String getField4() {
-        return field4;
-    }
-
-    public void setField4(String field4) {
-        this.field4 = field4;
-    }
-
-    public String getField5() {
-        return field5;
-    }
-
-    public void setField5(String field5) {
-        this.field5 = field5;
     }
 }
