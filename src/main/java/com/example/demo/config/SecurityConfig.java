@@ -14,7 +14,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/**").permitAll()  // TEMP: Allow ALL for demo
+                .requestMatchers("/**").permitAll() 
                 .anyRequest().permitAll()
             );
         return http.build();
