@@ -20,7 +20,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody UserRequest request) {
+    public ResponseEntity<User> register(@RequestBody User request) {
         return ResponseEntity.ok(userService.registerUser(request));
     }
 
@@ -31,6 +31,6 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getUserById(id));
+        return ResponseEntity.ok(userService.getUser(id));
     }
 }
