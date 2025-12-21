@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.ActivityCategoryRequest;
-import com.example.demo.dto.ActivityCategoryResponse;
+import com.example.demo.entity.ActivityCategory;
 import com.example.demo.service.ActivityCategoryService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +20,13 @@ public class ActivityCategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<ActivityCategoryResponse> create(
+    public ResponseEntity<ActivityCategory> create(
             @RequestBody ActivityCategoryRequest request) {
         return ResponseEntity.ok(categoryService.createCategory(request));
     }
 
     @GetMapping
-    public ResponseEntity<List<ActivityCategoryResponse>> getAll() {
+    public ResponseEntity<List<ActivityCategory>> getAll() {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
