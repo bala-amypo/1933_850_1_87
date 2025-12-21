@@ -15,7 +15,6 @@ import java.util.function.Function;
 
 public class JwtUtil {
 
-    // base64 secret (any sufficiently long random string, encoded)
     private static final String SECRET =
             "dGhpc19pc19hX3Rlc3Rfc2VjcmV0X2Zvcl9jYXJib25fZm9vdHByaW50X2FwaV9qd3Q=";
 
@@ -26,7 +25,7 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    // ===== Core helpers =====
+    // ---- internal parser ----
 
     private Claims parseClaims(String token) {
         return Jwts.parser()
@@ -36,14 +35,23 @@ public class JwtUtil {
                 .getPayload();
     }
 
+    // tests call this and then .getPayload()
+    public Claims parseToken(String token) {
+        return parseClaims(token);
+    }
+
+    // simple alias for tests that expect getPayload(token)
+    public Claims getPayload(String token) {
+        return parseClaims(token);
+    }
+
     public <T> T extractClaim(String token, Function<Claims, T> resolver) {
         Claims claims = parseClaims(token);
         return resolver.apply(claims);
     }
 
-    // ===== Methods explicitly required by helper doc =====
+    // ---- required APIs ----
 
-    // 1) generateToken(Map<String,Object>, String)
     public String generateToken(Map<String, Object> extraClaims, String subject) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + EXPIRATION_MS);
@@ -57,7 +65,6 @@ public class JwtUtil {
                 .compact();
     }
 
-    // 2) generateTokenForUser(User user) – includes userId, email, role
     public String generateTokenForUser(User user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", user.getId());
@@ -66,27 +73,18 @@ public class JwtUtil {
         return generateToken(claims, user.getEmail());
     }
 
-    // 3) parseToken(String token) – tests call this
-    public Claims parseToken(String token) {
-        return parseClaims(token);
-    }
-
-    // 4) extractUsername(String token) – returns subject (email)
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    // 5) extractRole(String token) – role claim
     public String extractRole(String token) {
-        return extractClaim(token, claims -> claims.get("role", String.class));
+        return extractClaim(token, c -> c.get("role", String.class));
     }
 
-    // 6) extractUserId(String token) – userId claim
     public Long extractUserId(String token) {
-        return extractClaim(token, claims -> claims.get("userId", Long.class));
+        return extractClaim(token, c -> c.get("userId", Long.class));
     }
 
-    // 7) isTokenValid(String token, String username)
     public boolean isTokenValid(String token, String username) {
         String subject = extractUsername(token);
         Date expiration = extractClaim(token, Claims::getExpiration);
