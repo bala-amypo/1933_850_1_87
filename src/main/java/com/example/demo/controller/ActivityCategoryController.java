@@ -21,7 +21,7 @@ public class ActivityCategoryController {
 
     @PostMapping
     public ResponseEntity<ActivityCategory> create(
-            @RequestBody request) {
+            @RequestBody ActivityCategoryRequest request) {
         return ResponseEntity.ok(categoryService.createCategory(request));
     }
 
