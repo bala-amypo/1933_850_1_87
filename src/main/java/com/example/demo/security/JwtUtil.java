@@ -2,6 +2,7 @@ package com.example.demo.security;
 
 import com.example.demo.entity.User;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -25,33 +26,38 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    // ---- internal parser ----
+    // ----------------------------------------------------------------
+    // Internal helpers
+    // ----------------------------------------------------------------
 
-    private Claims parseClaims(String token) {
+    // low-level parser: returns Jws<Claims> which HAS getPayload()
+    private Jws<Claims> parseJws(String token) {
         return Jwts.parser()
                 .verifyWith(getSigningKey())
                 .build()
-                .parseSignedClaims(token)
-                .getPayload();
+                .parseSignedClaims(token);
     }
 
-    // tests call this and then .getPayload()
-    public Claims parseToken(String token) {
-        return parseClaims(token);
+    // tests expect: jwtUtil.parseToken(token).getPayload()
+    public Jws<Claims> parseToken(String token) {
+        return parseJws(token);
     }
 
-    // simple alias for tests that expect getPayload(token)
-    public Claims getPayload(String token) {
-        return parseClaims(token);
+    // convenience: get only Claims when needed
+    private Claims getClaims(String token) {
+        return parseJws(token).getPayload();
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> resolver) {
-        Claims claims = parseClaims(token);
+        Claims claims = getClaims(token);
         return resolver.apply(claims);
     }
 
-    // ---- required APIs ----
+    // ----------------------------------------------------------------
+    // Required public API from helper document
+    // ----------------------------------------------------------------
 
+    // generateToken(Map<String,Object>, String)
     public String generateToken(Map<String, Object> extraClaims, String subject) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + EXPIRATION_MS);
@@ -65,6 +71,7 @@ public class JwtUtil {
                 .compact();
     }
 
+    // generateTokenForUser(User)
     public String generateTokenForUser(User user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", user.getId());
