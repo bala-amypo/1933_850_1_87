@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.stereotype.Component;   // <--- add this import
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+@Component   // <--- add this annotation
 public class JwtUtil {
 
     private static final String SECRET =
@@ -37,7 +39,6 @@ public class JwtUtil {
         return parseJws(token);
     }
 
- 
     private Claims getClaims(String token) {
         return parseJws(token).getPayload();
     }
@@ -47,7 +48,6 @@ public class JwtUtil {
         return resolver.apply(claims);
     }
 
-  
     public String generateToken(Map<String, Object> extraClaims, String subject) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + EXPIRATION_MS);
@@ -61,7 +61,6 @@ public class JwtUtil {
                 .compact();
     }
 
-    // generateTokenForUser(User)
     public String generateTokenForUser(User user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", user.getId());
