@@ -87,27 +87,44 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Tests -->
+        <!-- Spring Boot test support (JUnit, Mockito, etc.) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- TestNG for CarbonFootprintEstimatorTest -->
-<dependency>
-    <groupId>org.testng</groupId>
-    <artifactId>testng</artifactId>
-    <version>7.10.2</version>
-    <scope>test</scope>
-</dependency>
 
+        <!-- TestNG for CarbonFootprintEstimatorTest -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.10.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Spring Boot plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- Surefire configured to run TestNG tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <!-- Run TestNG instead of JUnit platform -->
+                    <testNGArtifactName>org.testng:testng</testNGArtifactName>
+
+                    <!-- Ensure our TestNG class is picked up -->
+                    <includes>
+                        <include>**/CarbonFootprintEstimatorTest.java</include>
+                    </includes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
