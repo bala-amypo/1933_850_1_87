@@ -15,7 +15,7 @@ public class SwaggerConfig {
     public OpenAPI api() {
         String securitySchemeName = "bearer-jwt";
 
-        // Define Bearer auth scheme for JWT
+        
         SecurityScheme bearerScheme = new SecurityScheme()
                 .type(SecurityScheme.Type.HTTP)
                 .scheme("bearer")
@@ -29,7 +29,7 @@ public class SwaggerConfig {
                         .version("v1"))
                 .components(new Components()
                         .addSecuritySchemes(securitySchemeName, bearerScheme))
-                // Apply it globally so the Authorize button works for all secured endpoints
+                
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName));
     }
 }
