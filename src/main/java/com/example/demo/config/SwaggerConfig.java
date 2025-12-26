@@ -16,7 +16,7 @@ public class SwaggerConfig {
                 // Use http because your app runs on Tomcat port 9001 (http) and is exposed via this URL.
                 // If the portal gives a different URL, replace it here.
                 .servers(List.of(
-                        new Server().url("http://9234.408procr.amypo.ai/")
+                        new Server().url("https://9234.408procr.amypo.ai/")
                 ));
     }
 }
