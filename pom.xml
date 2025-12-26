@@ -60,7 +60,7 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- MySQL driver (version managed by Spring Boot) -->
+        <!-- MySQL driver -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
@@ -111,16 +111,21 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <!-- Surefire configured to run TestNG tests -->
+            <!-- Surefire configured to use TestNG and run CarbonFootprintEstimatorTest -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <!-- Run TestNG instead of JUnit platform -->
+                    <!-- use TestNG provider, not JUnit platform -->
+                    <providers>
+                        <provider>
+                            <name>testng</name>
+                        </provider>
+                    </providers>
                     <testNGArtifactName>org.testng:testng</testNGArtifactName>
 
-                    <!-- Ensure our TestNG class is picked up -->
+                    <!-- ensure our TestNG class is included -->
                     <includes>
                         <include>**/CarbonFootprintEstimatorTest.java</include>
                     </includes>
