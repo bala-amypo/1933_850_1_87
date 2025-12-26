@@ -1,6 +1,6 @@
 package com.example.demo.config;
 
-import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Swagger;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +14,7 @@ public class SwaggerConfig {
         return new OpenAPI()
                 // You need to change the port as per your server
                 .servers(List.of(
-                        new Server().url("https://9271.408procr.amypo.ai/")
+                        new Server().url("https://9234.408procr.amypo.ai/")
                 ));
         }
 }
