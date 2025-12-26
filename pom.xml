@@ -41,7 +41,7 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <!-- JWT with JJWT 0.12.x -->
+        <!-- JWT (JJWT 0.12.6) -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -80,14 +80,14 @@
             <version>2.6.0</version>
         </dependency>
 
-        <!-- Lombok (compile-time only) -->
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
 
-        <!-- Spring Boot test infrastructure (JUnit, Mockito etc.) -->
+        <!-- Spring Boot test infrastructure -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -111,21 +111,18 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <!-- Surefire: run TestNG test class CarbonFootprintEstimatorTest -->
+            <!-- Surefire: run TestNG tests (CarbonFootprintEstimatorTest) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <!-- Use TestNG provider -->
                     <providers>
                         <provider>
                             <name>testng</name>
                         </provider>
                     </providers>
                     <testNGArtifactName>org.testng:testng</testNGArtifactName>
-
-                    <!-- Pick up your TestNG test class -->
                     <includes>
                         <include>**/CarbonFootprintEstimatorTest.java</include>
                     </includes>
