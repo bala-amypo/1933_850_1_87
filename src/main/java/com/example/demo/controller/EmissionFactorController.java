@@ -28,25 +28,30 @@ public class EmissionFactorController {
         return ResponseEntity.ok(created);
     }
 
-    // GET /api/factors/{id} – get factor
+    // GET /api/factors/{id} – get factor by id
     @GetMapping("/{id}")
     public ResponseEntity<EmissionFactor> getById(@PathVariable Long id) {
-        return factorService.getFactorById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        EmissionFactor factor = factorService.getFactor(id);
+        if (factor == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(factor);
     }
 
     // GET /api/factors/type/{activityTypeId} – get factor by type
     @GetMapping("/type/{activityTypeId}")
     public ResponseEntity<EmissionFactor> getByType(@PathVariable Long activityTypeId) {
-        return factorService.getFactorByActivityType(activityTypeId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        EmissionFactor factor = factorService.getFactorByType(activityTypeId);
+        if (factor == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(factor);
     }
 
-    // GET /api/factors/ – list all factors
+    // GET /api/factors – list all factors
     @GetMapping
     public ResponseEntity<List<EmissionFactor>> listAll() {
-        return ResponseEntity.ok(factorService.getAllFactors());
+        List<EmissionFactor> factors = factorService.getAllFactors();
+        return ResponseEntity.ok(factors);
     }
 }

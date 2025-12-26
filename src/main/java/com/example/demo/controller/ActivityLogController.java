@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.ActivityLogRequest;
 import com.example.demo.entity.ActivityLog;
 import com.example.demo.service.ActivityLogService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,31 +26,35 @@ public class ActivityLogController {
     @PostMapping("/{userId}/{typeId}")
     public ResponseEntity<ActivityLog> logActivity(@PathVariable Long userId,
                                                    @PathVariable Long typeId,
-                                                   @Valid @RequestBody ActivityLogRequest request) {
-        ActivityLog log = logService.logActivity(userId, typeId, request);
-        return ResponseEntity.ok(log);
+                                                   @Valid @RequestBody ActivityLog log) {
+        ActivityLog saved = logService.logActivity(userId, typeId, log);
+        return ResponseEntity.ok(saved);
     }
 
     // GET /api/logs/user/{userId} – list logs for user
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<ActivityLog>> getLogsForUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(logService.getLogsForUser(userId));
+        List<ActivityLog> logs = logService.getLogsByUser(userId);
+        return ResponseEntity.ok(logs);
     }
 
-    // GET /api/logs/user/{userId}/range – list logs by date range
+    // GET /api/logs/user/{userId}/range?start=2025-01-01&end=2025-01-31
     @GetMapping("/user/{userId}/range")
     public ResponseEntity<List<ActivityLog>> getLogsForUserInRange(
             @PathVariable Long userId,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
-        return ResponseEntity.ok(logService.getLogsForUserInRange(userId, from, to));
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
+        List<ActivityLog> logs = logService.getLogsByUserAndDate(userId, start, end);
+        return ResponseEntity.ok(logs);
     }
 
-    // GET /api/logs/{id} – get log
+    // GET /api/logs/{id} – get single log
     @GetMapping("/{id}")
     public ResponseEntity<ActivityLog> getById(@PathVariable Long id) {
-        return logService.getLogById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        ActivityLog log = logService.getLog(id);
+        if (log == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(log);
     }
 }

@@ -31,14 +31,17 @@ public class ActivityTypeController {
     // GET /api/types/category/{categoryId} – list types by category
     @GetMapping("/category/{categoryId}")
     public ResponseEntity<List<ActivityType>> listByCategory(@PathVariable Long categoryId) {
-        return ResponseEntity.ok(typeService.getTypesByCategory(categoryId));
+        List<ActivityType> types = typeService.getTypesByCategory(categoryId);
+        return ResponseEntity.ok(types);
     }
 
     // GET /api/types/{id} – get type
     @GetMapping("/{id}")
     public ResponseEntity<ActivityType> getById(@PathVariable Long id) {
-        return typeService.getTypeById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        ActivityType type = typeService.getType(id);
+        if (type == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(type);
     }
 }
