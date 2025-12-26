@@ -117,15 +117,12 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <!-- use TestNG provider, not JUnit platform -->
                     <providers>
                         <provider>
                             <name>testng</name>
                         </provider>
                     </providers>
                     <testNGArtifactName>org.testng:testng</testNGArtifactName>
-
-                    <!-- ensure our TestNG class is included -->
                     <includes>
                         <include>**/CarbonFootprintEstimatorTest.java</include>
                     </includes>
