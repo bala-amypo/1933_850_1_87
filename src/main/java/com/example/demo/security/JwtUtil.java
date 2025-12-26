@@ -26,11 +26,6 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    // ----------------------------------------------------------------
-    // Internal helpers
-    // ----------------------------------------------------------------
-
-    // low-level parser: returns Jws<Claims> which HAS getPayload()
     private Jws<Claims> parseJws(String token) {
         return Jwts.parser()
                 .verifyWith(getSigningKey())
@@ -38,12 +33,11 @@ public class JwtUtil {
                 .parseSignedClaims(token);
     }
 
-    // tests expect: jwtUtil.parseToken(token).getPayload()
     public Jws<Claims> parseToken(String token) {
         return parseJws(token);
     }
 
-    // convenience: get only Claims when needed
+ 
     private Claims getClaims(String token) {
         return parseJws(token).getPayload();
     }
@@ -53,11 +47,7 @@ public class JwtUtil {
         return resolver.apply(claims);
     }
 
-    // ----------------------------------------------------------------
-    // Required public API from helper document
-    // ----------------------------------------------------------------
-
-    // generateToken(Map<String,Object>, String)
+  
     public String generateToken(Map<String, Object> extraClaims, String subject) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + EXPIRATION_MS);
